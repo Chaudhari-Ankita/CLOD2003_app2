@@ -61,11 +61,11 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	segments := strings.Split(path, "/")
 	if len(segments) == 3 && segments[1] == "tasks" {
 		id = segments[2]
-    }
+	}
 	if len(id) > 0 {
 		getParticularUser(w, id)
 		return
-    }
+	}
 	getAllUsers(w)
 }
 
