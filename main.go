@@ -106,6 +106,21 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 
 // Mili
 func deleteUser(w http.ResponseWriter, r *http.Request) {
+	// get ID
+	path := r.URL.Path
+	var id string
+	segments := strings.Split(path, "/")
+	if len(segments) == 3 && segments[1] == "tasks" {
+		id = segments[2]
+	}
+	for index, value := range data {
+		if value.ID == id {
+			data = append(data[:index], data[index+1:]...)
+			return
+		}
+	}
+	fmt.Fprint(w, "Data successfully deleted")
+	getAllUsers(w)
 }
 
 // avneet
