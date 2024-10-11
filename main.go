@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 )
 
 // Kartik
@@ -51,6 +52,37 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 
 // Ankita
 func updateUser(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path //get ID
+	var id string
+	segments := strings.Split(path, "/")
+	if len(segments) == 3 && segments[1] == "tasks" {
+		id = segments[2]
+	}
+
+	// get JSON from body
+	var user Message
+	body, err := io.ReadAll(r.Body)
+
+	if err != nil {
+		http.Error(w, "Failed to read request body", http.StatusBadRequest)
+	}
+
+	err = json.Unmarshal(body, &user)
+
+	if err != nil {
+		http.Error(w, "Invalid read request body", http.StatusBadRequest)
+		return
+	}
+
+	//logic to update
+	for index, value := range data {
+		if value.ID == id {
+			data[index] = user
+		}
+	}
+
+	fmt.Fprint(w, "Your data is successfully updated")
+
 }
 
 // Mili
