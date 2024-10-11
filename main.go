@@ -39,6 +39,13 @@ func postUser(w http.ResponseWriter, r *http.Request) {
 
 // Kartik
 func getParticularUser(w http.ResponseWriter, id string) {
+	for _, values := range data {
+		if values.ID == id {
+			w.Header().Set("Content/Type", "application/json")
+			json.NewEncoder(w).Encode(values)
+			return
+		}
+	}
 }
 
 // Roshni
