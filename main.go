@@ -43,11 +43,23 @@ func getParticularUser(w http.ResponseWriter, id string) {
 
 // Roshni
 func getAllUsers(w http.ResponseWriter) {
-
+	w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(data)
 }
 
 // Roshni
 func getUser(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
+    var id string
+    segments := strings.Split(path, "/")
+    if len(segments) == 3 && segments[1] == "tasks" {
+       id = segments[2]
+    }
+    if len(id) > 0 {
+       getParticularUser(w, id)
+       return
+    }
+    getAllUsers(w)
 }
 
 // Ankita
