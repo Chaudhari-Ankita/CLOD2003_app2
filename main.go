@@ -1,13 +1,39 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
 )
 
 // Kartik
+type Message struct {
+	ID          string `json:"id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Status      string `json:"status"`
+}
+
+var data []Message
 
 // sanjay
 func postUser(w http.ResponseWriter, r *http.Request) {
+	var user Message
+	body, err := io.ReadAll(r.Body)
+
+	if err != nil {
+		http.Error(w, "Failed to read request body", http.StatusBadRequest)
+	}
+
+	err = json.Unmarshal(body, &user)
+
+	if err != nil {
+		http.Error(w, "Invalid read request body", http.StatusBadRequest)
+		return
+	}
+	data = append(data, user)
+	fmt.Fprint(w, "Your data is successfully added")
 }
 
 // Kartik
